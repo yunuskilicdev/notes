@@ -11,7 +11,74 @@ To apply those Resources, run kubectl apply with --kustomize or -k flag:
 kubectl apply -k <kustomization_directory>
 ````
 
-**Usage:**
+**Kustomize is used for declarative object configuration.**
+
+What are imperative and declarative object configurations?
+
+# Imperative object configuration
+
+In imperative object configuration, the kubectl command specifies the operation (create, replace, etc.), optional flags and at least one file name. The file specified must contain a full definition of the object in YAML or JSON format.[2]
+
+## Examples
+
+Create the objects defined in a configuration file:
+
+````
+kubectl create -f nginx.yaml
+````
+
+Delete the objects defined in two configuration files:
+````
+kubectl delete -f nginx.yaml -f redis.yaml
+````
+
+## Trade-offs
+
+**Advantages compared to imperative commands:**
+
+Object configuration can be stored in a source control system such as Git.
+
+Object configuration can integrate with processes such as reviewing changes before push and audit trails.
+
+Object configuration provides a template for creating new objects.
+
+**Disadvantages compared to imperative commands:**
+
+Object configuration requires basic understanding of the object schema.
+
+Object configuration requires the additional step of writing a YAML file.
+
+**Advantages compared to declarative object configuration:**
+
+Imperative object configuration behavior is simpler and easier to understand.
+
+As of Kubernetes version 1.5, imperative object configuration is more mature.
+
+**Disadvantages compared to declarative object configuration:**
+
+Imperative object configuration works best on files, not directories.
+
+Updates to live objects must be reflected in configuration files, or they will be lost during the next replacement.
+
+# Declarative object configuration
+
+When using declarative object configuration, a user operates on object configuration files stored locally, however the user does not define the operations to be taken on the files. Create, update, and delete operations are automatically detected per-object by kubectl. This enables working on directories, where different operations might be needed for different objects.
+
+## Trade-offs
+
+**Advantages compared to imperative object configuration:**
+
+Changes made directly to live objects are retained, even if they are not merged back into the configuration files.
+
+Declarative object configuration has better support for operating on directories and automatically detecting operation types (create, patch, delete) per-object.
+
+**Disadvantages compared to imperative object configuration:**
+
+Declarative object configuration is harder to debug and understand results when they are unexpected.
+
+Partial updates using diffs create complex merge and patch operations.
+
+# Kustomize Usage
 
 * Generating resources from other sources
 
@@ -19,11 +86,11 @@ kubectl apply -k <kustomization_directory>
 
 * Composing and customizing collections of resources
 
-###### Generating Resources
+## Generating Resources
 
 "ConfigMaps and Secrets hold configuration or sensitive data that are used by other Kubernetes objects, such as Pods. The source of truth of ConfigMaps or Secrets are usually external to a cluster, such as a .properties file or an SSH keyfile. Kustomize has secretGenerator and configMapGenerator, which generate Secret and ConfigMap from files or literals.[0]"
 
-**configMapGenerator**
+### configMapGenerator
 
 "To generate a ConfigMap from a file, add an entry to the files list in configMapGenerator[0]"
 
@@ -108,7 +175,7 @@ Kustomize generates ConfigMap and ConfigMap is mapped to a volume.
 
 secretGenerator can be found at [0].
 
-**Setting cross-cutting fields**
+### Setting cross-cutting fields
 
 It is quite common to set cross-cutting fields for all Kubernetes resources in a project. Some use cases for setting cross-cutting fields:
       
@@ -158,9 +225,9 @@ resources:
 EOF
 ````
 
-**Composing and Customizing Resources**
+### Composing and Customizing Resources
 
-* Composing
+#### Composing
 
 Kustomize supports composition of different resources. The resources field, in the kustomization.yaml file, defines the list of resources to include in a configuration. Set the path to a resource's configuration file in the resources list. Here is an example of an NGINX application comprised of a Deployment and a Service:
 
@@ -214,7 +281,7 @@ EOF
 
 The Resources from kubectl kustomize ./ contain both the Deployment and the Service objects.
 
-* Customizing
+#### Customizing
 
 Patches can be used to apply different customizations to Resources. Kustomize supports different patching mechanisms through patchesStrategicMerge and patchesJson6902. patchesStrategicMerge is a list of file paths. Each file should be resolved to a strategic merge patch. The names inside the patches must match Resource names that are already loaded. Small patches that do one thing are recommended. For example, create one patch for increasing the deployment replica number and another patch for setting the memory limit.
 
@@ -307,3 +374,5 @@ spec:
 0-) https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
 
 1-) https://github.com/kubernetes-sigs/kustomize
+
+2-) https://kubernetes.io/docs/concepts/overview/working-with-objects/object-management/
