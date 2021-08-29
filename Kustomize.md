@@ -305,4 +305,5 @@ spec:
 ````
 
 0-) https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+
 1-) https://github.com/kubernetes-sigs/kustomize
