@@ -2,7 +2,7 @@
 
 You need to know the below terms at least.
 
-###### Pods
+#Pods
 
 The smallest unit that can be deployed in Kubernetes.
 
@@ -15,19 +15,19 @@ But mostly each pod contains one container.
 
 “Note: Grouping multiple co-located and co-managed containers in a single Pod is a relatively advanced use case. You should use this pattern only in specific instances in which your containers are tightly coupled”[3].
 
-###### Replica Set
+# Replica Set
 
 “A ReplicaSet’s purpose is to maintain a stable set of replica Pods running at any given time. As such, it is often used to guarantee the availability of a specified number of identical Pods.”
 
 Introduces state management
 
-###### Deployments
+#Deployments
 
 Level of abstraction above ReplicaSets
 
 Deployments create and update ReplicaSets
 
-###### ConfigMaps
+# ConfigMaps
 
 Used to override container-specific data like
 
@@ -79,7 +79,7 @@ containers:
 
 “When a ConfigMap currently consumed in a volume is updated, projected keys are eventually updated as well. The kubelet checks whether the mounted ConfigMap is fresh on every periodic sync. However, the kubelet uses its local cache for getting the current value of the ConfigMap. The type of the cache is configurable using the ConfigMapAndSecretChangeDetectionStrategy field in the KubeletConfiguration struct. A ConfigMap can be either propagated by watch (default), ttl-based, or by redirecting all requests directly to the API server. As a result, the total delay from the moment when the ConfigMap is updated to the moment when new keys are projected to the Pod can be as long as the kubelet sync period + cache propagation delay, where the cache propagation delay depends on the chosen cache type (it equals to watch propagation delay, ttl of cache, or zero correspondingly).”[4]
 
-###### Services
+# Services
 
 Defines a DNS entry that can be used to refer to a group of pods
 
@@ -93,7 +93,7 @@ Different types ClusterIP, NodePort, LoadBalancer
   
 **LoadBalancer**: Exposes the Service externally using a cloud provider's load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
 
-###### Ingresses
+# Ingresses
 
 Define how traffic outside the cluster is routed to inside the cluster.
 
